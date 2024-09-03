@@ -1,25 +1,49 @@
-import logo from './logo.svg';
+import React, { useState } from "react";
+import { marked } from "marked";
 import './App.css';
 
+// Set the marked options to interpret carriage returns as <br> elements
+marked.setOptions({
+  breaks: true,
+});
+
 function App() {
+  const [markdown, setMarkdown] = useState(initialMarkdown);
+
+  const handleChange = (e) => {
+    setMarkdown(e.target.value);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Markdown Previewer</h1>
+      <textarea id="editor" value={markdown} onChange={handleChange} />
+      <div
+        id="preview"
+        dangerouslySetInnerHTML={{ __html: marked(markdown) }}
+      />
     </div>
   );
 }
+
+const initialMarkdown = `# Heading 1
+## Heading 2
+[Link](https://ishaqyudha.vercel.app)
+\`Inline code\`
+
+\`\`\`
+Code block
+\`\`\`
+
+- List item
+> Blockquote
+
+![Image](https://via.placeholder.com/150)
+
+**Bold text**
+
+Line one  
+Line two (this line is followed by two spaces, which creates a line break)
+`;
 
 export default App;
